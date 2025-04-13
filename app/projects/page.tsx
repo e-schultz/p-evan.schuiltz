@@ -58,6 +58,26 @@ export default function ProjectsPage() {
       featured: false,
     },
     {
+      title: "Ghost Thread Experience",
+      description:
+        "An experimental web application that explores the concept of 'ghost threads' - digital remnants of handwritten notes and thoughts that persist in digital spaces. Features a retro-futuristic terminal interface.",
+      tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
+      github: "https://github.com/e-schultz/ghost-thread-experience",
+      link: "https://ghost-thread-experience.lovable.app",
+      image: "/ghost-thread-experience.png",
+      featured: false,
+    },
+    {
+      title: "Sonic Geometry Explorer",
+      description:
+        "An interactive tool for exploring the relationships between geometry and sound. Visualize mathematical patterns and their corresponding audio representations in real-time.",
+      tags: ["WebAudio API", "Three.js", "JavaScript", "Data Visualization"],
+      github: "https://github.com/e-schultz/sonic-geometry-explorer",
+      link: "https://sonic-geometry-explorer.lovable.app",
+      image: "/sonic-geometry-explorer.png",
+      featured: false,
+    },
+    {
       title: "Outliner Meets ChatGPT",
       description:
         "A hybrid note-taking application that combines traditional outlining capabilities with AI assistance. Helps users organize thoughts while leveraging AI to expand ideas, suggest connections, and enhance creativity.",
@@ -72,7 +92,7 @@ export default function ProjectsPage() {
       description:
         "A generative design tool that creates infinite variations of design elements. Perfect for exploring design possibilities, generating inspiration, and discovering unexpected creative directions.",
       tags: ["Generative Design", "Creative Tools", "React", "Canvas API", "v0"],
-      github: null,
+      github: "https://github.com/e-schultz/v0-endless-designs",
       link: "https://v0-endless-designs.vercel.app",
       image: "/endless-designs-main.png",
       v0Link: "https://v0.dev/chat/projects/IESm6pp4Au1",
@@ -82,20 +102,11 @@ export default function ProjectsPage() {
       title: "FLOAT PKM Setup",
       description:
         "A starter kit for setting up a Personal Knowledge Management (PKM) system using the FLOAT methodology. Helps users quickly establish a framework for capturing, organizing, and connecting information.",
-      tags: ["PKM", "Next.js", "Knowledge Management", "Productivity"],
-      github: null,
+      tags: ["PKM", "Next.js", "Knowledge Management", "Productivity", "v0"],
+      github: "https://github.com/e-schultz/float-pkm-ideas-v0-1",
       link: "https://v0-next-js-float-setup.vercel.app",
       image: "/float-pkm-setup.png",
-      featured: false,
-    },
-    {
-      title: "Ghost Thread Experience",
-      description:
-        "An experimental web application that explores the concept of 'ghost threads' - digital remnants of conversations and interactions that persist in digital spaces. Built with React, TypeScript, and Vite.",
-      tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui"],
-      github: "https://github.com/e-schultz/ghost-thread-experience",
-      link: null,
-      image: "/ghost-thread-experience.png",
+      v0Link: "https://v0.dev/chat/projects/IEt9SykcYxk",
       featured: false,
     },
     {
@@ -116,16 +127,6 @@ export default function ProjectsPage() {
       github: "https://github.com/e-schultz/v0-sacred-voxel-recursion",
       link: null,
       image: "/v0-sacred-voxel-recursion.png",
-      featured: false,
-    },
-    {
-      title: "Sonic Geometry Explorer",
-      description:
-        "An interactive tool for exploring the relationships between geometry and sound. Visualize mathematical patterns and their corresponding audio representations in real-time.",
-      tags: ["WebAudio API", "Three.js", "JavaScript", "Data Visualization"],
-      github: "https://github.com/e-schultz/sonic-geometry-explorer",
-      link: null,
-      image: "/sonic-geometry-explorer.png",
       featured: false,
     },
   ]

@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, ExternalLink } from "lucide-react"
+import { ArrowLeft, ExternalLink, Github } from "lucide-react"
 
 export default function EndlessDesignsPage() {
   return (
@@ -30,6 +30,15 @@ export default function EndlessDesignsPage() {
                 <Button asChild>
                   <Link href="https://v0-endless-designs.vercel.app" target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="mr-2 h-4 w-4" /> Visit Project
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link
+                    href="https://github.com/e-schultz/v0-endless-designs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="mr-2 h-4 w-4" /> View Source
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
@@ -124,8 +133,24 @@ export default function EndlessDesignsPage() {
               <h2>Technical Implementation</h2>
               <p>
                 The application is built using React and leverages the Canvas API for high-performance rendering of
-                complex visual elements. The generative algorithms are implemented in JavaScript and use a combination
+                complex visual elements. The generative algorithms are implemented in TypeScript and use a combination
                 of mathematical principles and randomization to create unique designs.
+              </p>
+
+              <p>
+                The source code is available on{" "}
+                <a
+                  href="https://github.com/e-schultz/v0-endless-designs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  GitHub
+                </a>
+                , where you can see the implementation details including the minimalist animations for geometric
+                patterns. The project is structured as a Next.js application with TypeScript, featuring components like
+                background-tessellation, design-card, and various design components that work together to create the
+                infinite variations.
               </p>
 
               <p>
