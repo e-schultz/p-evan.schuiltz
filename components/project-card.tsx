@@ -12,6 +12,7 @@ interface Project {
   link: string | null
   image: string
   featured?: boolean
+  v0Link?: string
 }
 
 interface ProjectCardProps {
@@ -58,7 +59,19 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               </Link>
             </Button>
           )}
+          {project.v0Link && (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={project.v0Link} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-2 h-4 w-4" /> v0
+              </Link>
+            </Button>
+          )}
         </div>
+        {project.title && (
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={`/projects/${project.title.toLowerCase().replace(/\s+/g, "-")}`}>Details</Link>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )

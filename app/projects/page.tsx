@@ -71,10 +71,11 @@ export default function ProjectsPage() {
       title: "Endless Designs",
       description:
         "A generative design tool that creates infinite variations of design elements. Perfect for exploring design possibilities, generating inspiration, and discovering unexpected creative directions.",
-      tags: ["Generative Design", "Creative Tools", "React", "Canvas API"],
+      tags: ["Generative Design", "Creative Tools", "React", "Canvas API", "v0"],
       github: null,
       link: "https://v0-endless-designs.vercel.app",
-      image: "/endless-designs.png",
+      image: "/endless-designs-main.png",
+      v0Link: "https://v0.dev/chat/projects/IESm6pp4Au1",
       featured: false,
     },
     {
