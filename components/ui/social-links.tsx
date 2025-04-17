@@ -13,15 +13,18 @@ interface SocialLinksProps {
   className?: string
 }
 
-export function SocialLinks({ links, size = "md", className = "" }: SocialLinksProps) {
+export function SocialLinks({ links = [], size = "md", className = "" }: SocialLinksProps) {
   const sizeClasses = {
     sm: "h-4 w-4",
     md: "h-5 w-5",
     lg: "h-6 w-6",
   }
 
-  const getSocialIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
+  const getSocialIcon = (platform = "") => {
+    // Ensure platform is a string before calling toLowerCase
+    const platformName = String(platform).toLowerCase()
+
+    switch (platformName) {
       case "github":
         return <Github className={sizeClasses[size]} />
       case "linkedin":
@@ -33,19 +36,22 @@ export function SocialLinks({ links, size = "md", className = "" }: SocialLinksP
     }
   }
 
+  // Ensure links is an array
+  const safeLinks = Array.isArray(links) ? links : []
+
   return (
     <div className={`flex items-center gap-4 ${className}`}>
-      {links.map((link, index) => (
+      {safeLinks.map((link, index) => (
         <Link
           key={index}
-          href={link.url}
+          href={link.url || "#"}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-primary"
-          aria-label={link.label}
+          aria-label={link.label || "Social link"}
         >
           {getSocialIcon(link.platform)}
-          <span className="sr-only">{link.label}</span>
+          <span className="sr-only">{link.label || "Social link"}</span>
         </Link>
       ))}
     </div>
