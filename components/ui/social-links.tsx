@@ -22,7 +22,7 @@ export function SocialLinks({ links = [], size = "md", className = "" }: SocialL
 
   const getSocialIcon = (platform = "") => {
     // Ensure platform is a string before calling toLowerCase
-    const platformName = String(platform).toLowerCase()
+    const platformName = typeof platform === "string" ? platform.toLowerCase() : ""
 
     switch (platformName) {
       case "github":

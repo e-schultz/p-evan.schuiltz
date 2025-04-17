@@ -47,11 +47,11 @@ export default async function ContactPage() {
     }
 
     // Ensure platforms is an array and map to the expected format
-    const platforms = Array.isArray(social.platforms)
+    const platforms = Array.isArray(social?.platforms)
       ? social.platforms.map((platform) => ({
-          platform: platform.icon || platform.name || "",
-          url: platform.url || "#",
-          label: platform.name || "Social link",
+          platform: platform?.icon || platform?.name || "external",
+          url: platform?.url || "#",
+          label: platform?.name || "Social link",
         }))
       : []
 
