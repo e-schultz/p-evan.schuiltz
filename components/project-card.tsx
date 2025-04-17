@@ -3,17 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Github, ExternalLink } from "lucide-react"
-
-interface Project {
-  title: string
-  description: string
-  tags: string[]
-  github: string | null
-  link: string | null
-  image: string
-  featured?: boolean
-  v0Link?: string
-}
+import type { Project } from "@/lib/projects"
 
 interface ProjectCardProps {
   project: Project
@@ -67,9 +57,9 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             </Button>
           )}
         </div>
-        {project.title && (
+        {project.slug && (
           <Button variant="ghost" size="sm" asChild>
-            <Link href={`/projects/${project.title.toLowerCase().replace(/\s+/g, "-")}`}>Details</Link>
+            <Link href={`/projects/${project.slug}`}>Details</Link>
           </Button>
         )}
       </CardFooter>

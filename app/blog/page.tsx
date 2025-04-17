@@ -3,65 +3,18 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Calendar, Search } from "lucide-react"
+import { ArrowRight, Calendar } from "lucide-react"
 
-export default function BlogPage() {
-  // In a real app, this would come from a database or CMS
-  const posts = [
-    {
-      title: "Refactor to Hooks, not Classes",
-      description: "Learn why React Hooks are a better choice than class components for modern React applications.",
-      date: "2020-05-15",
-      tags: ["React", "Hooks", "JavaScript"],
-      slug: "refactor-to-react-hooks-not-classes",
-      image: "/react-hooks-flow.png",
-    },
-    {
-      title: "Simplifying React Forms with Hooks",
-      description: "A guide to creating simpler, more maintainable form handling in React using hooks.",
-      date: "2020-04-22",
-      tags: ["React", "Forms", "Hooks"],
-      slug: "simplifying-controlled-inputs-with-hooks",
-      image: "/placeholder.svg?height=200&width=400&query=React%20Form%20Components",
-    },
-    {
-      title: "Improving Your Mental Model of useEffect",
-      description: "Develop a better understanding of React's useEffect hook and how to use it effectively.",
-      date: "2020-03-10",
-      tags: ["React", "useEffect", "Hooks"],
-      slug: "improving-your-mental-model-of-useeffect",
-      image: "/placeholder.svg?height=200&width=400&query=React%20useEffect%20Diagram",
-    },
-    {
-      title: "How to Create Data-Driven User Interfaces in Vue",
-      description: "Learn techniques for building dynamic, data-driven interfaces with Vue.js.",
-      date: "2019-11-05",
-      tags: ["Vue", "JavaScript", "UI"],
-      slug: "how-to-create-data-driven-user-interfaces-in-vue",
-      image: "/placeholder.svg?height=200&width=400&query=Vue.js%20Data%20Visualization",
-    },
-    {
-      title: "Are Your Unit Tests Failing for the Expected Reasons?",
-      description: "Strategies to ensure your tests are actually testing what you think they are.",
-      date: "2019-09-18",
-      tags: ["Testing", "JavaScript", "Best Practices"],
-      slug: "are-your-unit-tests-failing-for-the-expected-reasons",
-      image: "/placeholder.svg?height=200&width=400&query=JavaScript%20Unit%20Testing",
-    },
-    {
-      title: "Quick Start with Angular Modules",
-      description: "A beginner's guide to understanding and working with Angular modules effectively.",
-      date: "2019-07-22",
-      tags: ["Angular", "JavaScript", "Modules"],
-      slug: "quick-start-with-angular-modules",
-      image: "/placeholder.svg?height=200&width=400&query=Angular%20Modules%20Diagram",
-    },
-  ]
+// This page should be updated to use the JSON content instead of hardcoded blog posts
 
-  // Get all unique tags
-  const allTags = Array.from(new Set(posts.flatMap((post) => post.tags)))
+// Replace the hardcoded posts array with data fetched from JSON files
+import { getAllBlogPosts, getAllTags } from "@/lib/blog"
+import { BlogSearch } from "@/components/blog-search"
+
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts()
+  const allTags = await getAllTags()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -86,12 +39,7 @@ export default function BlogPage() {
                 {/* Search */}
                 <div className="space-y-4">
                   <h3 className="font-medium text-lg">Search</h3>
-                  <div className="flex">
-                    <Input placeholder="Search articles..." className="rounded-r-none" />
-                    <Button variant="default" size="icon" className="rounded-l-none">
-                      <Search className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <BlogSearch />
                 </div>
 
                 {/* Categories */}
@@ -100,7 +48,7 @@ export default function BlogPage() {
                   <div className="flex flex-wrap gap-2">
                     {allTags.map((tag, index) => (
                       <Badge key={index} variant="outline" className="cursor-pointer hover:bg-muted">
-                        {tag}
+                        <Link href={`/blog/tag/${encodeURIComponent(tag.toLowerCase())}`}>{tag}</Link>
                       </Badge>
                     ))}
                   </div>
@@ -139,13 +87,13 @@ export default function BlogPage() {
                           {post.date}
                         </div>
                         <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                        <CardDescription className="line-clamp-3">{post.description}</CardDescription>
+                        <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
                       </CardHeader>
                       <CardContent className="flex-grow">
                         <div className="flex flex-wrap gap-2">
                           {post.tags.map((tag, tagIndex) => (
                             <Badge key={tagIndex} variant="secondary">
-                              {tag}
+                              <Link href={`/blog/tag/${encodeURIComponent(tag.toLowerCase())}`}>{tag}</Link>
                             </Badge>
                           ))}
                         </div>

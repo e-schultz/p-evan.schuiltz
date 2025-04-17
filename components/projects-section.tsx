@@ -2,45 +2,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Github, ExternalLink } from "lucide-react"
+import { ArrowRight, Github, ExternalLink } from 'lucide-react'
+import { getFeaturedProjects } from "@/lib/projects"
 
-export function ProjectsSection() {
-  const projects = [
-    {
-      title: "JavaScript/React Training",
-      description:
-        "A multi-day JavaScript/React workshop that has been taught to over 200 students in Toronto, Ottawa and Glasgow.",
-      tags: ["React", "JavaScript", "TypeScript", "Education"],
-      github: "https://github.com/e-schultz/ts-js-react-training",
-      link: null,
-      image: "/coding-collaboration.png",
-    },
-    {
-      title: "Angular Training Book",
-      description: "Contributed to Rangle's Angular Training book, a comprehensive guide to learning Angular.",
-      tags: ["Angular", "Education", "Documentation"],
-      github: null,
-      link: "https://angular-2-training-book.rangle.io/",
-      image: "/angular-learning-journey.png",
-    },
-    {
-      title: "Angular-Redux",
-      description:
-        "Maintained bindings for Redux to Angular which was used on several projects at Rangle, and saw adoption outside of Rangle.",
-      tags: ["Angular", "Redux", "Open Source"],
-      github: "https://github.com/angular-redux/store",
-      link: null,
-      image: "/angular-redux-flow.png",
-    },
-    {
-      title: "Redux-Beacon",
-      description: "Contributed to redux-beacon, analytics integration for redux and co-presented at React Europe.",
-      tags: ["Redux", "Analytics", "Open Source"],
-      github: "https://github.com/rangle/redux-beacon",
-      link: null,
-      image: "/redux-analytics-flow.png",
-    },
-  ]
+export async function ProjectsSection() {
+  const projects = await getFeaturedProjects()
 
   return (
     <section className="py-16 md:py-24 bg-muted/50" id="projects">

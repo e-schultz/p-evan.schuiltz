@@ -1,0 +1,225 @@
+{
+  "title": "Are Your Unit Tests Failing for the Expected Reasons?",
+  "slug": "are-your-unit-tests-failing-for-the-expected-reasons",
+  "date": "2019-09-18",
+  "author": "Evan Schultz",
+  "excerpt": "Strategies to ensure your tests are actually testing what you think they are.",
+  "tags": ["Testing", "JavaScript", "Best Practices"],
+  "category": "Testing",
+  "image": "/javascript-unit-testing-concept.png",
+  "content": [
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Introduction"
+    },
+    {
+      "type": "paragraph",
+      "content": "When a unit test fails, it should be because the functionality you're testing is broken. However, all too often, tests fail for unexpected reasons—misleading error messages, flaky test environments, or poorly structured test code. These issues can waste development time and erode confidence in your test suite."
+    },
+    {
+      "type": "paragraph",
+      "content": "In this article, we'll explore strategies to ensure your tests are failing for the right reasons, making your testing process more reliable and efficient."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "The Problem with Unreliable Tests"
+    },
+    {
+      "type": "paragraph",
+      "content": "Consider this scenario: You've written a test for a function that calculates the total price of items in a shopping cart. The test fails, and you spend hours debugging the calculation logic, only to discover that the test was failing because of an unrelated issue—perhaps a network timeout when fetching test data, or a date-dependent calculation that works differently on certain days."
+    },
+    {
+      "type": "paragraph",
+      "content": "These kinds of misleading test failures can be incredibly frustrating and time-consuming. They can also lead to a phenomenon known as 'test fatigue,' where developers begin to ignore failing tests because they don't trust them."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Common Causes of Misleading Test Failures"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "1. External Dependencies"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tests that rely on external services, databases, or APIs can fail due to issues with those dependencies rather than problems with your code."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ❌ Problematic test with external dependency\ntest('calculates order total', async () => {\n  const order = await fetchOrderFromAPI(123); // Could fail due to API issues\n  const total = calculateTotal(order);\n  expect(total).toBe(42.99);\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "2. Time-Dependent Tests"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tests that depend on the current date or time can behave differently depending on when they're run."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ❌ Time-dependent test\ntest('applies weekend discount', () => {\n  const price = calculatePriceWithDiscount(100);\n  // This will fail on weekdays!\n  expect(price).toBe(80);\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "3. Shared State"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tests that share state can interfere with each other, causing failures that depend on the order in which tests are run."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ❌ Tests with shared state\nlet db = [];\n\ntest('adds item to database', () => {\n  addItem(db, { id: 1, name: 'Test' });\n  expect(db.length).toBe(1);\n});\n\ntest('finds item by id', () => {\n  // This test assumes the previous test has run\n  const item = findItemById(db, 1);\n  expect(item.name).toBe('Test');\n});"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Strategies for More Reliable Tests"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "1. Isolate Tests with Mocks and Stubs"
+    },
+    {
+      "type": "paragraph",
+      "content": "Use mocks and stubs to isolate your tests from external dependencies."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ✅ Better: Using a mock for the API\ntest('calculates order total', () => {\n  // Mock order data instead of fetching from API\n  const mockOrder = {\n    items: [\n      { price: 29.99, quantity: 1 },\n      { price: 13.00, quantity: 1 }\n    ]\n  };\n  \n  const total = calculateTotal(mockOrder);\n  expect(total).toBe(42.99);\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "2. Control Time-Dependent Behavior"
+    },
+    {
+      "type": "paragraph",
+      "content": "For time-dependent tests, use libraries like sinon or jest's timer mocks to control the date and time."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ✅ Better: Controlling time\ntest('applies weekend discount on Saturdays', () => {\n  // Mock the date to be a Saturday\n  jest.spyOn(global.Date, 'now').mockImplementation(() => {\n    return new Date('2023-01-07').getTime(); // A Saturday\n  });\n  \n  const price = calculatePriceWithDiscount(100);\n  expect(price).toBe(80);\n  \n  // Clean up\n  jest.restoreAllMocks();\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "3. Reset State Between Tests"
+    },
+    {
+      "type": "paragraph",
+      "content": "Ensure each test starts with a clean state by using beforeEach and afterEach hooks."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ✅ Better: Resetting state between tests\nlet db;\n\nbeforeEach(() => {\n  db = []; // Fresh database for each test\n});\n\ntest('adds item to database', () => {\n  addItem(db, { id: 1, name: 'Test' });\n  expect(db.length).toBe(1);\n});\n\ntest('finds item by id', () => {\n  // This test no longer depends on the previous test\n  addItem(db, { id: 1, name: 'Test' });\n  const item = findItemById(db, 1);\n  expect(item.name).toBe('Test');\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "4. Use Clear Assertions and Error Messages"
+    },
+    {
+      "type": "paragraph",
+      "content": "Make your assertions specific and provide custom error messages to clarify what went wrong."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ✅ Better: Clear assertions with custom messages\ntest('calculates order total correctly', () => {\n  const order = {\n    items: [\n      { price: 29.99, quantity: 1 },\n      { price: 13.00, quantity: 1 }\n    ]\n  };\n  \n  const total = calculateTotal(order);\n  expect(total).toBeCloseTo(42.99, 2, 'Total should be sum of item prices');\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "5. Test One Thing at a Time"
+    },
+    {
+      "type": "paragraph",
+      "content": "Each test should verify a single behavior or aspect of your code."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// ❌ Testing too many things at once\ntest('order processing', () => {\n  const order = createOrder(['item1', 'item2']);\n  processPayment(order, 'credit-card');\n  shipOrder(order);\n  \n  expect(order.status).toBe('shipped');\n  expect(order.paymentStatus).toBe('completed');\n  expect(order.items.length).toBe(2);\n});\n\n// ✅ Better: Separate tests for each concern\ntest('creates order with correct items', () => {\n  const order = createOrder(['item1', 'item2']);\n  expect(order.items.length).toBe(2);\n  expect(order.items[0]).toBe('item1');\n  expect(order.items[1]).toBe('item2');\n});\n\ntest('processes payment successfully', () => {\n  const order = createOrder(['item1']);\n  processPayment(order, 'credit-card');\n  expect(order.paymentStatus).toBe('completed');\n});\n\ntest('ships order after payment', () => {\n  const order = { ...createOrder(['item1']), paymentStatus: 'completed' };\n  shipOrder(order);\n  expect(order.status).toBe('shipped');\n});"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Advanced Techniques"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "1. Property-Based Testing"
+    },
+    {
+      "type": "paragraph",
+      "content": "Instead of testing with specific examples, property-based testing generates many test cases to verify that certain properties hold true for all inputs."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "// Using fast-check for property-based testing\nimport fc from 'fast-check';\n\ntest('reversing a string twice returns the original string', () => {\n  fc.assert(\n    fc.property(fc.string(), str => {\n      expect(reverse(reverse(str))).toBe(str);\n    })\n  );\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "2. Snapshot Testing"
+    },
+    {
+      "type": "paragraph",
+      "content": "Snapshot testing can help catch unexpected changes in your code's output."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "content": "test('generates correct user profile HTML', () => {\n  const user = { name: 'Alice', role: 'Admin' };\n  const html = generateUserProfileHTML(user);\n  expect(html).toMatchSnapshot();\n});"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "3. Test Doubles Hierarchy"
+    },
+    {
+      "type": "paragraph",
+      "content": "Understand the different types of test doubles and when to use each:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Dummy objects: Passed around but never used",
+        "Stubs: Provide canned answers to calls",
+        "Spies: Record calls made to them",
+        "Mocks: Pre-programmed with expectations",
+        "Fakes: Working implementations with shortcuts"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "content": "Ensuring your tests fail for the expected reasons is crucial for maintaining a reliable test suite. By isolating tests from external dependencies, controlling time-dependent behavior, resetting state between tests, using clear assertions, and testing one thing at a time, you can create tests that provide accurate feedback about your code."
+    },
+    {
+      "type": "paragraph",
+      "content": "Remember, the goal of testing is not just to have high test coverage, but to have tests that effectively catch bugs and provide clear feedback when something goes wrong. When your tests fail for the right reasons, debugging becomes faster and more efficient, leading to higher quality code and a more productive development process."
+    }
+  ]
+}

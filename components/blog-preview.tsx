@@ -2,35 +2,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Calendar } from "lucide-react"
+import { ArrowRight, Calendar } from 'lucide-react'
+import { getLatestBlogPosts } from "@/lib/blog"
 
-export function BlogPreview() {
-  const posts = [
-    {
-      title: "Refactor to Hooks, not Classes",
-      description: "Learn why React Hooks are a better choice than class components for modern React applications.",
-      date: "2020-05-15",
-      tags: ["React", "Hooks", "JavaScript"],
-      slug: "refactor-to-react-hooks-not-classes",
-      image: "/react-hooks-flow.png",
-    },
-    {
-      title: "Simplifying React Forms with Hooks",
-      description: "A guide to creating simpler, more maintainable form handling in React using hooks.",
-      date: "2020-04-22",
-      tags: ["React", "Forms", "Hooks"],
-      slug: "simplifying-controlled-inputs-with-hooks",
-      image: "/placeholder.svg?height=200&width=400&query=React%20Form%20Components",
-    },
-    {
-      title: "Improving Your Mental Model of useEffect",
-      description: "Develop a better understanding of React's useEffect hook and how to use it effectively.",
-      date: "2020-03-10",
-      tags: ["React", "useEffect", "Hooks"],
-      slug: "improving-your-mental-model-of-useeffect",
-      image: "/placeholder.svg?height=200&width=400&query=React%20useEffect%20Diagram",
-    },
-  ]
+export async function BlogPreview() {
+  const posts = await getLatestBlogPosts(3)
 
   return (
     <section className="py-16 md:py-24 bg-background" id="blog">
@@ -59,7 +35,7 @@ export function BlogPreview() {
                   {post.date}
                 </div>
                 <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                <CardDescription className="line-clamp-3">{post.description}</CardDescription>
+                <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
                 <div className="flex flex-wrap gap-2">

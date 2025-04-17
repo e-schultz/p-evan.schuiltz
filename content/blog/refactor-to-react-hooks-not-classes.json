@@ -1,0 +1,91 @@
+{
+  "title": "Refactor to Hooks, not Classes",
+  "slug": "refactor-to-react-hooks-not-classes",
+  "date": "2020-05-15",
+  "author": "Evan Schultz",
+  "excerpt": "Learn why React Hooks are a better choice than class components for modern React applications.",
+  "tags": ["React", "Hooks", "JavaScript"],
+  "category": "React",
+  "image": "/react-hooks-flow.png",
+  "content": [
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Introduction"
+    },
+    {
+      "type": "paragraph",
+      "content": "When React Hooks were introduced in React 16.8, they provided a new way to use state and other React features without writing a class. This was a game-changer for many developers, as it allowed for more concise and readable code."
+    },
+    {
+      "type": "paragraph",
+      "content": "In this article, I'll explain why you should consider refactoring your class components to use hooks, and provide some practical examples of how to do so."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Why Hooks?"
+    },
+    {
+      "type": "paragraph",
+      "content": "Hooks solve several problems that developers have encountered with classes:"
+    },
+    {
+      "type": "list",
+      "items": [
+        {
+          "type": "listItem",
+          "content": "**Reusing stateful logic between components is difficult**. Hooks allow you to extract stateful logic from a component so it can be tested independently and reused."
+        },
+        {
+          "type": "listItem",
+          "content": "**Complex components become hard to understand**. Hooks let you split one component into smaller functions based on what pieces are related, rather than forcing a split based on lifecycle methods."
+        },
+        {
+          "type": "listItem",
+          "content": "**Classes confuse both people and machines**. Hooks let you use more of React's features without classes."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "From Class to Hooks: A Practical Example"
+    },
+    {
+      "type": "paragraph",
+      "content": "Let's look at a simple class component that tracks a counter:"
+    },
+    {
+      "type": "code",
+      "language": "jsx",
+      "content": "class Counter extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = {\n      count: 0\n    };\n  }\n\n  incrementCount = () => {\n    this.setState({ count: this.state.count + 1 });\n  }\n\n  render() {\n    return (\n      <div>\n        <p>You clicked {this.state.count} times</p>\n        <button onClick={this.incrementCount}>\n          Click me\n        </button>\n      </div>\n    );\n  }\n}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Now, let's refactor this to use hooks:"
+    },
+    {
+      "type": "code",
+      "language": "jsx",
+      "content": "function Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>You clicked {count} times</p>\n      <button onClick={() => setCount(count + 1)}>\n        Click me\n      </button>\n    </div>\n  );\n}"
+    },
+    {
+      "type": "paragraph",
+      "content": "Notice how much cleaner and more concise the code is with hooks. We've eliminated the need for a class, constructor, and binding methods."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Conclusion"
+    },
+    {
+      "type": "paragraph",
+      "content": "Hooks provide a more direct API to React concepts you already know: props, state, context, refs, and lifecycle. They also offer a powerful way to compose behavior that wasn't possible with classes."
+    },
+    {
+      "type": "paragraph",
+      "content": "If you're starting a new project or component, I recommend using hooks from the beginning. For existing projects, there's no need to rewrite all your components, but consider using hooks for new features and gradually refactoring existing components when it makes sense."
+    }
+  ]
+}
