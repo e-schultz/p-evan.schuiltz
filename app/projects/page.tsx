@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { ProjectCard } from "@/components/project-card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
-import { getAllProjects } from "@/lib/projects"
+import { getAllProjects } from "@/lib/content-server"
 
 export default async function ProjectsPage() {
   const projects = await getAllProjects()

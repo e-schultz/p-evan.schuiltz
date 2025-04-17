@@ -9,7 +9,7 @@ import { ArrowRight, Calendar } from "lucide-react"
 // This page should be updated to use the JSON content instead of hardcoded blog posts
 
 // Replace the hardcoded posts array with data fetched from JSON files
-import { getAllBlogPosts, getAllTags } from "@/lib/blog"
+import { getAllBlogPosts, getAllTags } from "@/lib/content-server"
 import { BlogSearch } from "@/components/blog-search"
 
 export default async function BlogPage() {

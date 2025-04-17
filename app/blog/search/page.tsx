@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -12,19 +11,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Calendar, Search } from "lucide-react"
-
-// Define the BlogPost type here to avoid importing from server-only module
-type BlogPost = {
-  title: string
-  slug: string
-  date: string
-  author: string
-  excerpt: string
-  content: any[]
-  image: string
-  tags: string[]
-  category: string
-}
+import { searchClientPosts } from "@/lib/content-client"
+import type { BlogPost } from "@/lib/content-types"
 
 export default function SearchPage() {
   const searchParams = useSearchParams()
@@ -42,9 +30,7 @@ export default function SearchPage() {
 
       setIsLoading(true)
       try {
-        // Use the API route to search posts
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
-        const data = await response.json()
+        const data = await searchClientPosts(query)
         setResults(data)
       } catch (error) {
         console.error("Error searching posts:", error)
@@ -67,9 +53,7 @@ export default function SearchPage() {
     const fetchResults = async () => {
       setIsLoading(true)
       try {
-        // Use the API route to search posts
-        const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`)
-        const data = await response.json()
+        const data = await searchClientPosts(searchQuery)
         setResults(data)
       } catch (error) {
         console.error("Error searching posts:", error)

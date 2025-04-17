@@ -2,7 +2,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ContactForm } from "@/components/contact-form"
 import { Mail, MessageSquare, Github, Linkedin, Twitter } from "lucide-react"
-import { getCachedJsonContent } from "@/lib/content"
+import { getCachedJsonContent } from "@/lib/content-server"
 
 export default async function ContactPage() {
   const contactContent = await getCachedJsonContent("pages/contact")

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Calendar } from "lucide-react"
-import { getPostsByCategory, getAllCategories } from "@/lib/blog"
+import { getPostsByCategory, getAllCategories } from "@/lib/content-server"
 
 export async function generateStaticParams() {
   try {

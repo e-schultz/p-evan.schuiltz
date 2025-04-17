@@ -2,8 +2,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Calendar } from 'lucide-react'
-import { getLatestBlogPosts } from "@/lib/blog"
+import { ArrowRight, Calendar } from "lucide-react"
+import { getLatestBlogPosts } from "@/lib/content-server"
 
 export async function BlogPreview() {
   const posts = await getLatestBlogPosts(3)

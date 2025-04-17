@@ -1,10 +1,11 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Github, Linkedin, Twitter } from "lucide-react"
-import { getCachedJsonContent } from "@/lib/content"
+import { getCachedJsonContent } from "@/lib/content-server"
+import type { HeroContent } from "@/lib/content-types"
 
 export async function HeroSection() {
-  const heroContent = await getCachedJsonContent("home/hero")
+  const heroContent = (await getCachedJsonContent("home/hero")) as HeroContent
 
   if (!heroContent) {
     return <div>Loading hero content...</div>

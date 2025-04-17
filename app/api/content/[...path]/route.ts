@@ -1,4 +1,4 @@
-import { getJsonContent } from "@/lib/content"
+import { getJsonContent } from "@/lib/content-server"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest, { params }: { params: { path: string[] } }) {

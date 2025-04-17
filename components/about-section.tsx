@@ -1,11 +1,12 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from 'lucide-react'
-import { getCachedJsonContent } from "@/lib/content"
+import { ArrowRight } from "lucide-react"
+import { getCachedJsonContent } from "@/lib/content-server"
+import type { AboutContent } from "@/lib/content-types"
 
 export async function AboutSection() {
-  const aboutContent = await getCachedJsonContent('home/about')
-  
+  const aboutContent = (await getCachedJsonContent("home/about")) as AboutContent
+
   if (!aboutContent) {
     return <div>Loading about content...</div>
   }
@@ -16,9 +17,7 @@ export async function AboutSection() {
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{aboutContent.title}</h2>
           <div className="w-20 h-1 bg-primary mb-8"></div>
-          <p className="text-lg text-muted-foreground max-w-3xl">
-            {aboutContent.description}
-          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl">{aboutContent.description}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -26,11 +25,12 @@ export async function AboutSection() {
             {aboutContent.sections.map((section, index) => (
               <div key={index} className="space-y-4">
                 <h3 className="text-2xl font-bold">{section.title}</h3>
-                {section.content && section.content.map((paragraph, pIndex) => (
-                  <p key={pIndex} className="text-muted-foreground">
-                    {paragraph}
-                  </p>
-                ))}
+                {section.content &&
+                  section.content.map((paragraph, pIndex) => (
+                    <p key={pIndex} className="text-muted-foreground">
+                      {paragraph}
+                    </p>
+                  ))}
                 {section.items && (
                   <ul className="space-y-2 text-muted-foreground">
                     {section.items.map((item, itemIndex) => (

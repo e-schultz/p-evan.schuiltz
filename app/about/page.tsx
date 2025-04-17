@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Briefcase, GraduationCap, Mic, User, ArrowRight } from "lucide-react"
-import { getCachedJsonContent } from "@/lib/content"
+import { getCachedJsonContent } from "@/lib/content-server"
 
 export default async function AboutPage() {
   const aboutContent = await getCachedJsonContent("pages/about")

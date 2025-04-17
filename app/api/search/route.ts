@@ -1,4 +1,4 @@
-import { searchPosts } from "@/lib/blog"
+import { searchPosts } from "@/lib/content-server"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {

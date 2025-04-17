@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,28 +8,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Send } from "lucide-react"
-
-interface FormField {
-  name: string
-  label: string
-  type: string
-  placeholder: string
-  required: boolean
-  rows?: number
-}
-
-interface FormContent {
-  title: string
-  description: string
-  fields: FormField[]
-  submitButton: {
-    text: string
-    icon: string
-  }
-}
+import type { ContactFormContent } from "@/lib/content-types"
 
 interface ContactFormProps {
-  formContent?: FormContent
+  formContent?: ContactFormContent
 }
 
 export function ContactForm({ formContent }: ContactFormProps) {
