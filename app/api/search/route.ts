@@ -1,5 +1,7 @@
-import { searchPosts } from "@/lib/content-server"
+import { searchPosts } from "@/lib/content-api"
 import { type NextRequest, NextResponse } from "next/server"
+
+export const dynamic = "force-dynamic" // Ensure this is always a dynamic route
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams

@@ -2,16 +2,17 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { MainLayout } from "@/components/layouts/main-layout"
+import { PageHeader } from "@/components/ui/page-header"
+import { ContentContainer } from "@/components/ui/content-container"
+import { BlogPostGrid } from "@/components/blog/blog-post-grid"
+import { NoResults } from "@/components/ui/no-results"
+import { LoadingSpinner } from "@/components/loading-spinner"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Calendar, Search } from "lucide-react"
-import { searchClientPosts } from "@/lib/content-client"
+import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
+import { searchClientPosts } from "@/lib/content-client-api"
 import type { BlogPost } from "@/lib/content-types"
 
 export default function SearchPage() {
@@ -66,103 +67,49 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <section className="bg-muted py-12 md:py-16">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Search Results</h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                {query ? `Showing results for "${query}"` : "Search for articles"}
-              </p>
-              <form onSubmit={handleSearch} className="flex max-w-lg mx-auto">
-                <Input
-                  type="search"
-                  placeholder="Search articles..."
-                  className="rounded-r-none"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button type="submit" className="rounded-l-none">
-                  <Search className="h-4 w-4 mr-2" /> Search
-                </Button>
-              </form>
-            </div>
-          </div>
-        </section>
+    <MainLayout>
+      <PageHeader title="Search Results" description={query ? `Showing results for "${query}"` : "Search for articles"}>
+        <div className="mt-8">
+          <form onSubmit={handleSearch} className="flex max-w-lg mx-auto">
+            <Input
+              type="search"
+              placeholder="Search articles..."
+              className="rounded-r-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Button type="submit" className="rounded-l-none">
+              <Search className="h-4 w-4 mr-2" /> Search
+            </Button>
+          </form>
+        </div>
+      </PageHeader>
 
-        <section className="py-12">
-          <div className="container">
-            {isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-                <p className="mt-4 text-muted-foreground">Searching...</p>
-              </div>
-            ) : results.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {results.map((post, index) => (
-                  <Card key={index} className="flex flex-col h-full">
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={post.image || "/placeholder.svg"}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform hover:scale-105"
-                      />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center text-sm text-muted-foreground mb-2">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {post.date}
-                      </div>
-                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                      <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <Badge variant="outline" className="mb-2">
-                        <Link href={`/blog/category/${encodeURIComponent(post.category.toLowerCase())}`}>
-                          {post.category}
-                        </Link>
-                      </Badge>
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags.map((tag, tagIndex) => (
-                          <Badge key={tagIndex} variant="secondary">
-                            <Link href={`/blog/tag/${encodeURIComponent(tag.toLowerCase())}`}>{tag}</Link>
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="ghost" asChild className="w-full">
-                        <Link href={`/blog/${post.slug}`}>
-                          Read More <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            ) : query ? (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">No results found</h2>
-                <p className="text-muted-foreground mb-6">No articles match your search for "{query}".</p>
-                <Button asChild>
-                  <Link href="/blog">Browse all articles</Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">Enter a search term</h2>
-                <p className="text-muted-foreground mb-6">Type in the search box above to find articles.</p>
-                <Button asChild>
-                  <Link href="/blog">Browse all articles</Link>
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </div>
+      <section className="py-12">
+        <ContentContainer>
+          {isLoading ? (
+            <div className="flex justify-center">
+              <LoadingSpinner size="large" />
+            </div>
+          ) : results.length > 0 ? (
+            <BlogPostGrid posts={results} columns={3} showCategory={true} />
+          ) : query ? (
+            <NoResults
+              title="No results found"
+              message={`No articles match your search for "${query}".`}
+              actionText="Browse all articles"
+              actionLink="/blog"
+            />
+          ) : (
+            <NoResults
+              title="Enter a search term"
+              message="Type in the search box above to find articles."
+              actionText="Browse all articles"
+              actionLink="/blog"
+            />
+          )}
+        </ContentContainer>
+      </section>
+    </MainLayout>
   )
 }

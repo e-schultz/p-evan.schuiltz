@@ -1,11 +1,11 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
+import { MainLayout } from "@/components/layouts/main-layout"
+import { ContentContainer } from "@/components/ui/content-container"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Calendar, User } from "lucide-react"
-import { getBlogPostBySlug, getAllBlogSlugs } from "@/lib/content-server"
+import { getBlogPost, getAllBlogSlugs } from "@/lib/content-api"
 import { renderContentBlocks } from "@/lib/format-content"
 import { ContentError } from "@/components/content-error"
 
@@ -22,17 +22,16 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   try {
-    const post = await getBlogPostBySlug(params.slug)
+    const post = await getBlogPost(params.slug)
 
     if (!post) {
       notFound()
     }
 
     return (
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1">
-          <article className="container max-w-4xl py-12">
+      <MainLayout>
+        <ContentContainer maxWidth="4xl">
+          <article className="py-12">
             <Button variant="ghost" asChild className="mb-8">
               <Link href="/blog">
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to all posts
@@ -70,25 +69,24 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             <div className="prose prose-lg dark:prose-invert max-w-none">{renderContentBlocks(post.content)}</div>
           </article>
-        </main>
-        <SiteFooter />
-      </div>
+        </ContentContainer>
+      </MainLayout>
     )
   } catch (error) {
     console.error(`Error loading blog post: ${params.slug}`, error)
     return (
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1 container py-12">
-          <ContentError
-            title="Failed to Load Blog Post"
-            message="We're having trouble loading this blog post. Please try again later."
-            backLink="/blog"
-            backText="Back to Blog"
-          />
-        </main>
-        <SiteFooter />
-      </div>
+      <MainLayout>
+        <ContentContainer>
+          <div className="py-12">
+            <ContentError
+              title="Failed to Load Blog Post"
+              message="We're having trouble loading this blog post. Please try again later."
+              backLink="/blog"
+              backText="Back to Blog"
+            />
+          </div>
+        </ContentContainer>
+      </MainLayout>
     )
   }
 }

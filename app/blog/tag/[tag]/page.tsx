@@ -1,14 +1,13 @@
-import Link from "next/link"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Calendar } from "lucide-react"
-import { getPostsByTag, getAllTags } from "@/lib/content-server"
+import { MainLayout } from "@/components/layouts/main-layout"
+import { PageHeader } from "@/components/ui/page-header"
+import { ContentContainer } from "@/components/ui/content-container"
+import { BlogPostGrid } from "@/components/blog/blog-post-grid"
+import { NoResults } from "@/components/ui/no-results"
+import { getPostsByTag, getAllTags } from "@/lib/content-api"
 
 export async function generateStaticParams() {
   try {
+    // Use direct server function instead of API route
     const tags = await getAllTags()
     return tags.map((tag) => ({ tag: tag.toLowerCase() }))
   } catch (error) {
@@ -19,81 +18,27 @@ export async function generateStaticParams() {
 
 export default async function TagPage({ params }: { params: { tag: string } }) {
   const decodedTag = decodeURIComponent(params.tag)
+  // Use direct server function instead of API route
   const posts = await getPostsByTag(decodedTag)
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <section className="bg-muted py-12 md:py-16">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Tag: {decodedTag}</h1>
-              <p className="text-xl text-muted-foreground">Browse all articles tagged with {decodedTag}</p>
-            </div>
-          </div>
-        </section>
+    <MainLayout>
+      <PageHeader title={`Tag: ${decodedTag}`} description={`Browse all articles tagged with ${decodedTag}`} />
 
-        <section className="py-12">
-          <div className="container">
-            {posts.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {posts.map((post, index) => (
-                  <Card key={index} className="flex flex-col h-full">
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={post.coverImage || post.image || "/placeholder.svg"}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform hover:scale-105"
-                      />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center text-sm text-muted-foreground mb-2">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {post.date}
-                      </div>
-                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                      <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <Badge variant="outline" className="mb-2">
-                        <Link href={`/blog/category/${encodeURIComponent(post.category.toLowerCase())}`}>
-                          {post.category}
-                        </Link>
-                      </Badge>
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags
-                          .filter((tag) => tag.toLowerCase() !== decodedTag.toLowerCase())
-                          .map((tag, tagIndex) => (
-                            <Badge key={tagIndex} variant="secondary">
-                              <Link href={`/blog/tag/${encodeURIComponent(tag.toLowerCase())}`}>{tag}</Link>
-                            </Badge>
-                          ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="ghost" asChild className="w-full">
-                        <Link href={`/blog/${post.slug}`}>
-                          Read More <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">No posts found</h2>
-                <p className="text-muted-foreground mb-6">There are no posts with the tag {decodedTag} yet.</p>
-                <Button asChild>
-                  <Link href="/blog">Back to all posts</Link>
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </div>
+      <section className="py-12">
+        <ContentContainer>
+          {posts.length > 0 ? (
+            <BlogPostGrid posts={posts} columns={3} showCategory={true} />
+          ) : (
+            <NoResults
+              title="No posts found"
+              message={`There are no posts with the tag ${decodedTag} yet.`}
+              actionText="Back to all posts"
+              actionLink="/blog"
+            />
+          )}
+        </ContentContainer>
+      </section>
+    </MainLayout>
   )
 }

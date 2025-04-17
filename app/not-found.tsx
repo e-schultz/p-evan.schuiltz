@@ -1,15 +1,14 @@
 import Link from "next/link"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
+import { MainLayout } from "@/components/layouts/main-layout"
+import { ContentContainer } from "@/components/ui/content-container"
 import { Button } from "@/components/ui/button"
 import { FileQuestion } from "lucide-react"
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1 flex items-center justify-center">
-        <div className="container max-w-md text-center py-20">
+    <MainLayout>
+      <div className="flex-1 flex items-center justify-center">
+        <ContentContainer maxWidth="md" className="text-center py-20">
           <div className="bg-muted p-4 rounded-full inline-flex mb-6">
             <FileQuestion className="h-12 w-12 text-primary" />
           </div>
@@ -20,9 +19,8 @@ export default function NotFound() {
           <Button asChild>
             <Link href="/">Return to Home</Link>
           </Button>
-        </div>
-      </main>
-      <SiteFooter />
-    </div>
+        </ContentContainer>
+      </div>
+    </MainLayout>
   )
 }

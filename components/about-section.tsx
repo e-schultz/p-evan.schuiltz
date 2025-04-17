@@ -1,11 +1,11 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
-import { getCachedJsonContent } from "@/lib/content-server"
+import { getGenericContent } from "@/lib/content-api"
 import type { AboutContent } from "@/lib/content-types"
 
 export async function AboutSection() {
-  const aboutContent = (await getCachedJsonContent("home/about")) as AboutContent
+  const aboutContent = (await getGenericContent("home/about")) as AboutContent
 
   if (!aboutContent) {
     return <div>Loading about content...</div>

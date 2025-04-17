@@ -1,8 +1,8 @@
 "use client"
 
 import { ErrorBoundary } from "@/components/error-boundary"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
+import { MainLayout } from "@/components/layouts/main-layout"
+import { ContentContainer } from "@/components/ui/content-container"
 
 export default function GlobalError({
   error,
@@ -14,13 +14,11 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1 container py-12">
+        <MainLayout>
+          <ContentContainer className="py-12">
             <ErrorBoundary error={error} reset={reset} />
-          </main>
-          <SiteFooter />
-        </div>
+          </ContentContainer>
+        </MainLayout>
       </body>
     </html>
   )
