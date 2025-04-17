@@ -8,8 +8,13 @@ import { ArrowRight, Calendar } from "lucide-react"
 import { getPostsByTag, getAllTags } from "@/lib/blog"
 
 export async function generateStaticParams() {
-  const tags = await getAllTags()
-  return tags.map((tag) => ({ tag: tag.toLowerCase() }))
+  try {
+    const tags = await getAllTags()
+    return tags.map((tag) => ({ tag: tag.toLowerCase() }))
+  } catch (error) {
+    console.error("Error generating static params for tags:", error)
+    return []
+  }
 }
 
 export default async function TagPage({ params }: { params: { tag: string } }) {
@@ -37,7 +42,7 @@ export default async function TagPage({ params }: { params: { tag: string } }) {
                   <Card key={index} className="flex flex-col h-full">
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={post.coverImage || "/placeholder.svg"}
+                        src={post.coverImage || post.image || "/placeholder.svg"}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform hover:scale-105"
                       />

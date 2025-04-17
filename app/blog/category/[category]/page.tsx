@@ -8,8 +8,13 @@ import { ArrowRight, Calendar } from "lucide-react"
 import { getPostsByCategory, getAllCategories } from "@/lib/blog"
 
 export async function generateStaticParams() {
-  const categories = await getAllCategories()
-  return categories.map((category) => ({ category: category.toLowerCase() }))
+  try {
+    const categories = await getAllCategories()
+    return categories.map((category) => ({ category: category.toLowerCase() }))
+  } catch (error) {
+    console.error("Error generating static params for categories:", error)
+    return []
+  }
 }
 
 export default async function CategoryPage({ params }: { params: { category: string } }) {
@@ -37,7 +42,7 @@ export default async function CategoryPage({ params }: { params: { category: str
                   <Card key={index} className="flex flex-col h-full">
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={post.coverImage || "/placeholder.svg"}
+                        src={post.coverImage || post.image || "/placeholder.svg"}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform hover:scale-105"
                       />

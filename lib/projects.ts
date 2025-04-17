@@ -1,10 +1,6 @@
 "use server"
-
-import path from "path"
 import { cache } from "react"
 import { getCachedJsonContent, getJsonFilesInDirectory } from "./content"
-
-const projectsDirectory = path.join(process.cwd(), "content/projects")
 
 export type Project = {
   title: string

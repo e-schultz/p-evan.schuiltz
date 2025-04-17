@@ -3,7 +3,6 @@
 import fs from "fs"
 import path from "path"
 import { cache } from "react"
-import { headers } from "next/headers"
 
 // Base directory for content
 const contentDirectory = path.join(process.cwd(), "content")
@@ -30,21 +29,15 @@ async function ensureContentDirectories() {
   }
 }
 
-// Initialize directories
-try {
-  // We can't use await at the top level in a module, so we use a regular Promise
+// Initialize directories - but only in development
+if (process.env.NODE_ENV === "development") {
   ensureContentDirectories().catch((error) => {
     console.error("Error creating content directories:", error)
   })
-} catch (error) {
-  console.error("Error initializing content directories:", error)
 }
 
 // Read JSON content
 export async function getJsonContent(contentPath: string) {
-  // This function is only called on the server
-  headers() // This will throw an error if called on the client
-
   const fullPath = path.join(contentDirectory, `${contentPath}.json`)
   try {
     const fileContents = await fs.promises.readFile(fullPath, "utf8")
@@ -60,9 +53,6 @@ export const getCachedJsonContent = cache(getJsonContent)
 
 // Function to get all files in a directory with a specific extension
 export async function getFilesInDirectory(directory: string, extension: string) {
-  // This function is only called on the server
-  headers() // This will throw an error if called on the client
-
   const fullPath = path.join(contentDirectory, directory)
   try {
     try {

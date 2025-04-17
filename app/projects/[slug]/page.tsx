@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
@@ -6,20 +7,25 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, ExternalLink, Github } from "lucide-react"
 import { getProjectBySlug, getAllProjects } from "@/lib/projects"
 import { renderContentBlocks } from "@/lib/format-content"
-import { notFound } from "next/navigation"
 
 // Generate static params for all project pages
 export async function generateStaticParams() {
-  const projects = await getAllProjects()
-  return projects.map((project) => ({
-    slug: project.slug,
-  }))
+  try {
+    const projects = await getAllProjects()
+    return projects.map((project) => ({
+      slug: project.slug,
+    }))
+  } catch (error) {
+    console.error("Error generating static params for projects:", error)
+    return []
+  }
 }
 
 export default async function ProjectPage({ params }: { params: { slug: string } }) {
   const project = await getProjectBySlug(params.slug)
 
   if (!project) {
+    console.error(`Project not found: ${params.slug}`)
     notFound()
   }
 

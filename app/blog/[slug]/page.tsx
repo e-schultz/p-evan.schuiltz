@@ -10,8 +10,13 @@ import { renderContentBlocks } from "@/lib/format-content"
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
-  const slugs = await getAllBlogSlugs()
-  return slugs.map((slug) => ({ slug }))
+  try {
+    const slugs = await getAllBlogSlugs()
+    return slugs.map((slug) => ({ slug }))
+  } catch (error) {
+    console.error("Error generating static params for blog posts:", error)
+    return []
+  }
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
