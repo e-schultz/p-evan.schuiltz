@@ -27,12 +27,23 @@ export interface Project {
   screenshots?: { image: string; alt: string }[]
 }
 
-export interface ContentBlock {
-  type: string
+// Update the ContentBlock type to include language and filename for code blocks
+export type ContentBlock = {
+  type: "heading" | "paragraph" | "list" | "code" | "blockquote" | "image"
   level?: number
   content?: string
-  items?: (string | { type: string; title?: string; content?: string })[]
-  language?: string
+  items?: string[] | ListItem[]
+  language?: string // Add this for code blocks
+  filename?: string // Add this for code blocks
+  alt?: string
+  src?: string
+  caption?: string
+}
+
+export type ListItem = {
+  type: "listItem"
+  title?: string
+  content?: string
 }
 
 export interface HeroContent {

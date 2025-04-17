@@ -8,6 +8,52 @@ import { ArrowLeft, ExternalLink, Github } from "lucide-react"
 import { getProject, getAllProjects } from "@/lib/content-api"
 import { renderContentBlocks } from "@/lib/format-content"
 import { ContentError } from "@/components/content-error"
+import { ErrorBoundaryWrapper } from "@/components/error-boundary-wrapper"
+
+// Add this at the top of the file, after the imports
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const project = await getProject(params.slug)
+
+    if (!project) {
+      return {
+        title: "Project Not Found",
+        description: "The requested project could not be found.",
+      }
+    }
+
+    return {
+      title: `${project.title} | Projects | Evan Schultz`,
+      description: project.description,
+      openGraph: {
+        title: project.title,
+        description: project.description,
+        type: "website",
+        images: [
+          {
+            url: project.image || "/placeholder.svg",
+            width: 1200,
+            height: 630,
+            alt: project.title,
+          },
+        ],
+        tags: project.tags,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: project.title,
+        description: project.description,
+        images: [project.image || "/placeholder.svg"],
+      },
+    }
+  } catch (error) {
+    console.error(`Error generating metadata for project: ${params.slug}`, error)
+    return {
+      title: "Project | Evan Schultz",
+      description: "View projects by Evan Schultz",
+    }
+  }
+}
 
 // Generate static params for all project pages
 export async function generateStaticParams() {
@@ -83,16 +129,18 @@ export default async function ProjectPage({ params }: { params: { slug: string }
               </div>
             )}
 
-            <div className="space-y-8 prose dark:prose-invert max-w-none">
-              {project.fullDescription ? (
-                renderContentBlocks(project.fullDescription)
-              ) : (
-                <>
-                  <h2>Project Overview</h2>
-                  <p>{project.description}</p>
-                </>
-              )}
-            </div>
+            <ErrorBoundaryWrapper>
+              <div className="space-y-8 prose dark:prose-invert max-w-none">
+                {project.fullDescription ? (
+                  renderContentBlocks(project.fullDescription)
+                ) : (
+                  <>
+                    <h2>Project Overview</h2>
+                    <p>{project.description}</p>
+                  </>
+                )}
+              </div>
+            </ErrorBoundaryWrapper>
           </ContentContainer>
         </section>
       </MainLayout>

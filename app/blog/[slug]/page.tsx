@@ -8,6 +8,54 @@ import { ArrowLeft, Calendar, User } from "lucide-react"
 import { getBlogPost, getAllBlogSlugs } from "@/lib/content-api"
 import { renderContentBlocks } from "@/lib/format-content"
 import { ContentError } from "@/components/content-error"
+import { ErrorBoundaryWrapper } from "@/components/error-boundary-wrapper"
+
+// Add this at the top of the file, after the imports
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const post = await getBlogPost(params.slug)
+
+    if (!post) {
+      return {
+        title: "Blog Post Not Found",
+        description: "The requested blog post could not be found.",
+      }
+    }
+
+    return {
+      title: `${post.title} | Evan Schultz`,
+      description: post.excerpt,
+      openGraph: {
+        title: post.title,
+        description: post.excerpt,
+        type: "article",
+        publishedTime: post.date,
+        authors: [post.author],
+        images: [
+          {
+            url: post.image || "/placeholder.svg",
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
+        tags: post.tags,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: post.excerpt,
+        images: [post.image || "/placeholder.svg"],
+      },
+    }
+  } catch (error) {
+    console.error(`Error generating metadata for blog post: ${params.slug}`, error)
+    return {
+      title: "Blog Post | Evan Schultz",
+      description: "Read the latest from Evan Schultz",
+    }
+  }
+}
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
@@ -67,7 +115,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               </div>
             </div>
 
-            <div className="prose prose-lg dark:prose-invert max-w-none">{renderContentBlocks(post.content)}</div>
+            <ErrorBoundaryWrapper>
+              <div className="prose prose-lg dark:prose-invert max-w-none">{renderContentBlocks(post.content)}</div>
+            </ErrorBoundaryWrapper>
           </article>
         </ContentContainer>
       </MainLayout>

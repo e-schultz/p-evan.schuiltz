@@ -3,8 +3,10 @@
 import { cache } from "react"
 import fs from "fs"
 import path from "path"
-import { validateBlogPost, validateProject, validateContent } from "./content-validation"
+import { validateContent } from "./content-validation"
 import type { BlogPost, Project } from "./content-types"
+// Add this import at the top
+import { validateBlogPost, validateProject } from "./content-validator"
 
 // Base directory for content
 const contentDirectory = path.join(process.cwd(), "content")
@@ -124,9 +126,19 @@ export async function getAllContent<T>(contentType: ContentType, validator?: (da
   return contentItems.filter(Boolean) as T[]
 }
 
-// Blog-specific functions
+// Find the getBlogPost function and add validation:
 export const getBlogPost = cache(async (slug: string): Promise<BlogPost | null> => {
-  return await getContent<BlogPost>("blog", slug, validateBlogPost)
+  const post = await getContent<BlogPost>("blog", slug)
+
+  if (post) {
+    // Validate the post and log any errors
+    const errors = validateBlogPost(post)
+    if (errors.length > 0) {
+      console.warn(`Validation issues in blog post ${slug}:`, errors)
+    }
+  }
+
+  return post
 })
 
 // Add the missing getAllBlogSlugs function
@@ -181,9 +193,19 @@ export const searchPosts = cache(async (query: string): Promise<BlogPost[]> => {
   )
 })
 
-// Project-specific functions
+// Find the getProject function and add validation:
 export const getProject = cache(async (slug: string): Promise<Project | null> => {
-  return await getContent<Project>("project", slug, validateProject)
+  const project = await getContent<Project>("project", slug)
+
+  if (project) {
+    // Validate the project and log any errors
+    const errors = validateProject(project)
+    if (errors.length > 0) {
+      console.warn(`Validation issues in project ${slug}:`, errors)
+    }
+  }
+
+  return project
 })
 
 export const getAllProjects = cache(async (): Promise<Project[]> => {

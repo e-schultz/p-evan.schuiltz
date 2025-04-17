@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Github, Linkedin, Twitter } from "lucide-react"
 import { getGenericContent } from "@/lib/content-api"
 import type { HeroContent } from "@/lib/content-types"
+import Image from "next/image"
 
 export async function HeroSection() {
   const heroContent = (await getGenericContent("home/hero")) as HeroContent
@@ -60,11 +61,20 @@ export async function HeroSection() {
           </div>
           <div className="relative h-[350px] md:h-[450px] rounded-lg overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-background/50 mix-blend-multiply z-10"></div>
-            <img
-              src={heroContent.image || "/placeholder.svg"}
-              alt="Tech-inspired illustration"
-              className="w-full h-full object-cover"
-            />
+            {heroContent.image ? (
+              <Image
+                src={heroContent.image || "/placeholder.svg"}
+                alt="Tech-inspired illustration"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+                className="object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <span className="text-muted-foreground">Image not available</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

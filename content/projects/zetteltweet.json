@@ -6,7 +6,7 @@
   "github": "https://github.com/e-schultz/v0-float-zet-concept-project",
   "link": "https://v0-zettelkasten-note-app.vercel.app",
   "v0Link": "https://v0.dev/chat/projects/x1PSWTYbQJ0",
-  "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-04-17%20at%204.01.10%E2%80%AFPM-Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9.png",
+  "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-04-17%20at%207.55.59%E2%80%AFPM-sDYg8f876TrZTn633eSphkJ1mfS0BB.png",
   "featured": true,
   "fullDescription": [
     {
@@ -73,8 +73,8 @@
   ],
   "screenshots": [
     {
-      "image": "https://sjc.microlink.io/pERhNhSw50Bx2lpx6uqiYh2bJxovTSKssrbJRgn---NOzfUlrofg5Mf49LG_850j_KxNrRNu6AI2o54s36kqOg.jpeg",
-      "alt": "ZettelTweet interface showing the main screen with Timeline and Threads tabs"
+      "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-04-17%20at%207.55.59%E2%80%AFPM-sDYg8f876TrZTn633eSphkJ1mfS0BB.png",
+      "alt": "ZettelTweet interface showing the Timeline view with notes organized by mental models and connections between topics"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import type React from "react"
 import type { ContentBlock } from "./content-types"
+import { CodeBlock } from "@/components/ui/code-block"
 
 // Function to parse and render formatted text (basic markdown-like syntax)
 export function formatText(text: string): React.ReactNode {
@@ -80,11 +81,12 @@ export function renderContentBlocks(content: ContentBlock[]): React.ReactNode {
         )
       case "code":
         return (
-          <div key={index} className="bg-muted p-4 rounded-md my-6 overflow-x-auto">
-            <pre>
-              <code>{block.content}</code>
-            </pre>
-          </div>
+          <CodeBlock
+            key={index}
+            code={block.content || ""}
+            language={block.language || "typescript"}
+            filename={block.filename}
+          />
         )
       case "blockquote":
         return (
