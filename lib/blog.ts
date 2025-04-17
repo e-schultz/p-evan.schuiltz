@@ -1,3 +1,5 @@
+"use server"
+
 import path from "path"
 import fs from "fs"
 import { cache } from "react"
@@ -19,7 +21,7 @@ export type BlogPost = {
 
 export const getAllBlogSlugs = cache(async (): Promise<string[]> => {
   try {
-    const fileNames = fs.readdirSync(blogDirectory)
+    const fileNames = await fs.promises.readdir(blogDirectory)
     return fileNames.filter((file) => file.endsWith(".json")).map((file) => file.replace(/\.json$/, ""))
   } catch (error) {
     console.error("Error reading blog directory:", error)

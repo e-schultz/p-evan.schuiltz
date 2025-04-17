@@ -12,7 +12,19 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, Calendar, Search } from "lucide-react"
-import { type BlogPost, searchPosts } from "@/lib/blog"
+
+// Define the BlogPost type here to avoid importing from server-only module
+type BlogPost = {
+  title: string
+  slug: string
+  date: string
+  author: string
+  excerpt: string
+  content: any[]
+  image: string
+  tags: string[]
+  category: string
+}
 
 export default function SearchPage() {
   const searchParams = useSearchParams()
@@ -30,8 +42,10 @@ export default function SearchPage() {
 
       setIsLoading(true)
       try {
-        const posts = await searchPosts(query)
-        setResults(posts)
+        // Use the API route to search posts
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
+        const data = await response.json()
+        setResults(data)
       } catch (error) {
         console.error("Error searching posts:", error)
       } finally {
@@ -53,8 +67,10 @@ export default function SearchPage() {
     const fetchResults = async () => {
       setIsLoading(true)
       try {
-        const posts = await searchPosts(searchQuery)
-        setResults(posts)
+        // Use the API route to search posts
+        const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`)
+        const data = await response.json()
+        setResults(data)
       } catch (error) {
         console.error("Error searching posts:", error)
       } finally {
@@ -105,7 +121,7 @@ export default function SearchPage() {
                   <Card key={index} className="flex flex-col h-full">
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={post.coverImage || "/placeholder.svg"}
+                        src={post.image || "/placeholder.svg"}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform hover:scale-105"
                       />

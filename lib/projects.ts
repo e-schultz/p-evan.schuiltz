@@ -1,3 +1,5 @@
+"use server"
+
 import path from "path"
 import { cache } from "react"
 import { getCachedJsonContent, getJsonFilesInDirectory } from "./content"
@@ -21,7 +23,7 @@ export type Project = {
 export const getAllProjects = cache(async (): Promise<Project[]> => {
   try {
     // Get all JSON files in the projects directory
-    const fileNames = getJsonFilesInDirectory("projects")
+    const fileNames = await getJsonFilesInDirectory("projects")
 
     // Load each project
     const projects = await Promise.all(
