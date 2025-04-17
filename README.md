@@ -61,7 +61,7 @@ The application uses Next.js dynamic routes to generate pages from content files
 
 Project content files follow this structure:
 
-\`\`\`json
+```json
 {
   "title": "Project Title",
   "slug": "project-slug",
@@ -97,13 +97,13 @@ Project content files follow this structure:
     }
   ]
 }
-\`\`\`
+```
 
 ### Blog Post Files
 
 Blog post content files follow this structure:
 
-\`\`\`json
+```json
 {
   "title": "Blog Post Title",
   "slug": "blog-post-slug",
@@ -138,7 +138,7 @@ Blog post content files follow this structure:
     }
   ]
 }
-\`\`\`
+```
 
 ## Adding New Content
 
@@ -217,7 +217,7 @@ The components that consume the content will continue to work without changes as
 
 ### Installation
 
-\`\`\`bash
+```bash
 # Clone the repository
 git clone https://github.com/yourusername/portfolio.git
 cd portfolio
@@ -227,17 +227,17 @@ npm install
 
 # Start the development server
 npm run dev
-\`\`\`
+```
 
 ### Building for Production
 
-\`\`\`bash
+```bash
 # Build the application
 npm run build
 
 # Start the production server
 npm start
-\`\`\`
+```
 
 ## License
 
