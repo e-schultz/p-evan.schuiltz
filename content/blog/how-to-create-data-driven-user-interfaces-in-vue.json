@@ -6,7 +6,7 @@
   "excerpt": "Learn techniques for building dynamic, data-driven interfaces with Vue.js.",
   "tags": ["Vue", "JavaScript", "UI"],
   "category": "Vue",
-  "image": "/vue-data-dashboard.png",
+  "image": "/images/blog/vue-data-dashboard.png",
   "content": [
     {
       "type": "heading",
