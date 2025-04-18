@@ -6,7 +6,7 @@
   "excerpt": "Develop a better understanding of React's useEffect hook and how to use it effectively.",
   "tags": ["React", "useEffect", "Hooks"],
   "category": "React",
-  "image": "/react-useeffect-lifecycle.png",
+  "image": "/images/blog/react-useeffect-lifecycle.png",
   "content": [
     {
       "type": "heading",
