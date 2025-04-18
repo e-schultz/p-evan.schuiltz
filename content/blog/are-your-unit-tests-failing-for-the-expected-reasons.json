@@ -6,7 +6,7 @@
   "excerpt": "Strategies to ensure your tests are actually testing what you think they are.",
   "tags": ["Testing", "JavaScript", "Best Practices"],
   "category": "Testing",
-  "image": "/javascript-unit-testing-concept.png",
+  "image": "/images/blog/javascript-unit-testing-concept.png",
   "content": [
     {
       "type": "heading",
